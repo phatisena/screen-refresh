@@ -33,8 +33,12 @@ namespace srcRefesh {
         if (Zidx > 0) { Sidx = Zidx}
         createRenderable(Sidx, function(srcimg) {
             if (Auto) {
-                if (Fimg <= 0 || (Fimg > 0 && game.runtime() % Flimg == 0)) {
-                    uimg = CheckSrcImg(srcimg)
+                if (Fimg <= 0 || (Fimg > 0 && Math.floor(game.runtime() % Flimg) == 0)) {    
+                    uimg.fill(scene.backgroundColor())
+                    if (scene.backgroundColor() <= 0) {
+                        uimg.fill(15)
+                    }
+                    drawTransparentImage(CheckSrcImg(srcimg), uimg, 0, 0)
                 }
                 drawTransparentImage(uimg, srcimg, 0, 0)
             }
