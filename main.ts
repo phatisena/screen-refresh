@@ -29,7 +29,7 @@ namespace srcRefesh {
         let srcimg = image.create(scene.screenWidth(), scene.screenHeight())
         let uimg = image.create(scene.screenWidth(), scene.screenHeight())
         let Sidx = 999999999999
-        let Flimg = Math.floor(1000 / Fimg)
+        let Flimg = Math.floor(1000 / (1000 - Fimg))
         if (Zidx > 0) { Sidx = Zidx}
         createRenderable(Sidx, function(srcimg) {
             if (Auto) {
