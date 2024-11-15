@@ -3,7 +3,7 @@
 //%icon="\uf26c"
 namespace srcRefesh {
 
-    let cursrcimg: Image = image.create(scene.screenWidth(), scene.screenHeight())
+    let cursrcimg: Image = null
 
     export function createRenderable(index: number, handler: (screen: Image) => void) {
         scene.createRenderable(index, handler);
@@ -15,28 +15,28 @@ namespace srcRefesh {
     }
 
     export function CheckSrcImg(Simg: Image = image.create(scene.screenWidth(), scene.screenHeight())) {
-        if (Simg.equals(cursrcimg) && !(Simg.equals(image.create(scene.screenWidth(), scene.screenHeight())))) {
-            return false
+        if ((cursrcimg) && (Simg.equals(cursrcimg) && !(Simg.equals(image.create(scene.screenWidth(), scene.screenHeight()))))) {
+            return cursrcimg.clone()
         }
         cursrcimg = (Simg.clone())
-        return true
+        return Simg.clone()
     }
 
     //%blockid=autosrc_autorefeshsrc
-    //%block="Get auto screen refesh $Auto || in Z-index $Zidx"
+    //%block="Get auto screen refesh $Auto in frame $Fimg || in Z-index $Zidx"
     //%group="auto screen refesh"
-    export function SetAutoRefesh (Auto: boolean = false, Zidx: number = 0) {
+    export function SetAutoRefesh (Auto: boolean = false, Fimg: number = 0, Zidx: number = 0) {
         let srcimg = image.create(scene.screenWidth(), scene.screenHeight())
         let uimg = image.create(scene.screenWidth(), scene.screenHeight())
         let Sidx = 999999999999
+        let Flimg = Math.floor(1000 / Fimg)
         if (Zidx > 0) { Sidx = Zidx}
         createRenderable(Sidx, function(srcimg) {
-            uimg = image.create(scene.screenWidth(), scene.screenHeight())
             if (Auto) {
-                if (CheckSrcImg(srcimg)) {
-                    uimg = image.screenImage()
-                    drawTransparentImage(uimg, srcimg, 0, 0)
+                if (Fimg <= 0 || (Fimg > 0 && game.runtime() % Flimg == 0)) {
+                    uimg = CheckSrcImg(srcimg)
                 }
+                drawTransparentImage(uimg, srcimg, 0, 0)
             }
         })
     }
